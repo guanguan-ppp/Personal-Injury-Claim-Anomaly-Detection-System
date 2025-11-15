@@ -1,0 +1,9 @@
+FROM python:3.9-alpine
+WORKDIR /app
+RUN apk update && apk add build-base
+COPY requirements.txt .
+RUN pip install --no-cache-dir numpy pandas scikit-learn lightgbm matplotlib seaborn openpyxl fastapi uvicorn pydantic
+COPY . .
+RUN mkdir -p /app/data
+EXPOSE 8000
+CMD ["python", "app.py"]

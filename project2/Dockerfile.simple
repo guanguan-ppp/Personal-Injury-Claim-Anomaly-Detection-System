@@ -1,0 +1,23 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# 最小化系统包安装
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc g++ && \
+    rm -rf /var/lib/apt/lists/*
+
+# 复制requirements
+COPY requirements.txt .
+
+# 直接安装所有依赖（不分组）
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 复制代码
+COPY . .
+
+RUN mkdir -p /app/data
+
+EXPOSE 8000
+
+CMD ["python", "app.py"]
